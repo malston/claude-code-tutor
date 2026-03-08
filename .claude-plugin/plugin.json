@@ -1,0 +1,9 @@
+{
+  "name": "claude-code-tutor",
+  "description": "Interactive tutor for Claude Code workshop attendees. Teaches via wiki content and Anki flashcards with progressive topic unlocking.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mark Alston"
+  },
+  "license": "MIT"
+}
