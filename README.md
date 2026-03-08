@@ -6,7 +6,15 @@ A Claude Code plugin that tutors workshop attendees on how to use and improve th
 
 - Claude Code CLI
 - [Anki](https://apps.ankiweb.net/) with [AnkiConnect](https://ankiweb.net/shared/info/2055492159) add-on (for quiz mode)
-- Study guide flashcard decks imported into Anki
+- Study guide flashcard decks imported into Anki (see below)
+
+### Setting up Anki flashcard decks
+
+The tutor's quiz mode pulls questions from Anki flashcard decks built from the Claude Code Wiki. To set them up:
+
+1. Clone the [Claude Code Wiki Study Guide](https://github.com/malston/claude-code-wiki-study-guide)
+2. Follow the **Install Anki**, **Import the Decks**, and **Card Types** sections in that repo's README
+3. Install the [AnkiConnect](https://ankiweb.net/shared/info/2055492159) add-on and keep Anki running when using quiz mode
 
 ## Installation
 
