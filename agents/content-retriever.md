@@ -1,7 +1,7 @@
 ---
 name: content-retriever
-description: Fetches Claude Code wiki content via WebFetch and queries AnkiConnect for flashcards. Returns focused excerpts for tutoring.
-tools: WebFetch, Read
+description: Fetches Claude Code wiki content and AnkiConnect flashcards. Returns focused excerpts for tutoring.
+tools: WebFetch, Read, Bash
 ---
 
 # Content Retriever
@@ -82,30 +82,22 @@ If WebFetch fails (network error, 404, timeout, or any other failure):
 
 When `source` is `anki`:
 
+AnkiConnect runs on localhost over plain HTTP, and WebFetch upgrades HTTP URLs to HTTPS,
+making it incompatible with AnkiConnect. Use Bash with curl for all AnkiConnect requests.
+
 1. Determine the deck name from the topic. The study guide uses 6 decks matching the topic
    keys: `internals`, `guides`, `extending`, `enterprise-rollout`, `product`,
    `training-paths`.
-2. Find matching notes by posting to the AnkiConnect API:
-   ```json
-   {
-     "action": "findNotes",
-     "version": 6,
-     "params": {
-       "query": "deck:DeckName tag:section::subtopic"
-     }
-   }
+2. Find matching notes by posting to the AnkiConnect API via Bash:
+   ```bash
+   curl -s --max-time 5 -X POST "{anki_url}" -d '{"action":"findNotes","version":6,"params":{"query":"deck:DeckName tag:section::subtopic"}}'
    ```
-   Replace `DeckName` with the topic's deck name and `section::subtopic` with the tag
-   matching the subtopic (e.g., `internals::context-window-management`).
-3. Retrieve note details by posting:
-   ```json
-   {
-     "action": "notesInfo",
-     "version": 6,
-     "params": {
-       "notes": [noteId1, noteId2]
-     }
-   }
+   Replace `{anki_url}` with the AnkiConnect URL from input, `DeckName` with the topic's
+   deck name, and `section::subtopic` with the tag matching the subtopic (e.g.,
+   `internals::context-window-management`).
+3. Retrieve note details by posting via Bash:
+   ```bash
+   curl -s --max-time 5 -X POST "{anki_url}" -d '{"action":"notesInfo","version":6,"params":{"notes":[noteId1,noteId2]}}'
    ```
 4. Extract the Front and Back fields from each note. Cards use tab-separated format.
 5. Limit the results to `count` cards (default 10). If more notes are available than

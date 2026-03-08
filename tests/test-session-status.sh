@@ -78,7 +78,7 @@ JSON
   local output
   output="$(HOME="$TEMP_HOME" bash "$HOOK" 2>&1)" || true
   run_test "In-progress topic → status line" \
-    "Tutor: Guides -- 3/8 subtopics complete. /tutor to continue." \
+    "Tutor: Guides -- 3/8 subtopics complete. /claude-code-tutor:tutor to continue." \
     "$output"
 }
 
@@ -102,7 +102,7 @@ JSON
   local output
   output="$(HOME="$TEMP_HOME" bash "$HOOK" 2>&1)" || true
   run_test "All topics completed → completion message" \
-    "Tutor: All 6 topics complete! /tutor quiz to review." \
+    "Tutor: All 6 topics complete! /claude-code-tutor:tutor quiz to review." \
     "$output"
 }
 
@@ -122,7 +122,7 @@ JSON
   local output
   output="$(HOME="$TEMP_HOME" bash "$HOOK" 2>&1)" || true
   run_test "Unlocked topic ready → Ready for message" \
-    "Tutor: Ready for Guides. /tutor to start." \
+    "Tutor: Ready for Guides. /claude-code-tutor:tutor to start." \
     "$output"
 }
 
@@ -167,7 +167,7 @@ JSON
   local output
   output="$(HOME="$TEMP_HOME" bash "$HOOK" 2>&1)" || true
   run_test "In-progress beats unlocked → shows in-progress" \
-    "Tutor: Internals -- 1/6 subtopics complete. /tutor to continue." \
+    "Tutor: Internals -- 1/6 subtopics complete. /claude-code-tutor:tutor to continue." \
     "$output"
 }
 

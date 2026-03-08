@@ -9,16 +9,16 @@ description: >
 
 Activate when the user asks about Claude Code usage, configuration, workflows, extensions,
 hooks, prompting, debugging, testing, model selection, memory, permissions, enterprise
-rollout, or training paths. Also activate when the user explicitly runs `/tutor`.
+rollout, or training paths. Also activate when the user explicitly runs `/claude-code-tutor:tutor`.
 
-For casual Q&A (no `/tutor` command), answer inline using wiki content fetched by the
+For casual Q&A (no `/claude-code-tutor:tutor` command), answer inline using wiki content fetched by the
 content-retriever agent. Do not track progress in Q&A mode.
 
-For structured sessions (`/tutor` command), route based on arguments -- see Mode Routing.
+For structured sessions (`/claude-code-tutor:tutor` command), route based on arguments -- see Mode Routing.
 
 Before dispatching any agent, read `~/.claude-code-tutor/progress.json` to get the wiki
 base URL and current progress state. If the file does not exist, tell the user to run
-`/tutor:setup` first (Q&A mode can still work using the default wiki URL:
+`/claude-code-tutor:setup` first (Q&A mode can still work using the default wiki URL:
 `https://malston.github.io/claude-code-wiki/`).
 
 # Topic Map
@@ -115,7 +115,7 @@ prerequisite context alongside the requested content. Do not block access.
 
 ## Q&A (auto-invoked, no command)
 
-When a Claude Code question is detected outside of `/tutor`:
+When a Claude Code question is detected outside of `/claude-code-tutor:tutor`:
 
 1. Identify the relevant topic and subtopic from the topic map.
 2. Dispatch the content-retriever agent with source `wiki`, the topic, subtopic, and
@@ -123,7 +123,7 @@ When a Claude Code question is detected outside of `/tutor`:
 3. Synthesize a focused answer from the returned wiki content.
 4. Do not update progress. This is reference mode only.
 
-## Guided Discovery (`/tutor` or `/tutor [topic]`)
+## Guided Discovery (`/claude-code-tutor:tutor` or `/claude-code-tutor:tutor [topic]`)
 
 1. Read progress.json.
 2. Determine the target topic:
@@ -141,7 +141,7 @@ When a Claude Code question is detected outside of `/tutor`:
 8. Update progress.json with the result.
 9. Check if the topic is now complete and whether dependent topics should unlock.
 
-## Quiz (`/tutor quiz` or `/tutor quiz [topic]`)
+## Quiz (`/claude-code-tutor:tutor quiz` or `/claude-code-tutor:tutor quiz [topic]`)
 
 1. Read progress.json.
 2. Default to the current `in_progress` topic if no topic specified.
