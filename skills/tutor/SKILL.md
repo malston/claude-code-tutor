@@ -88,8 +88,7 @@ training-paths: # Level 6 - requires: product, enterprise-rollout
 ## Topic Status
 
 Each topic has a status: `locked`, `unlocked`, `in_progress`, or `completed`. A topic
-unlocks when all its prerequisites reach `completed`. A topic completes when the user
-passes assessments for all its subtopics.
+unlocks when all its prerequisites reach `completed`. A topic completes when `subtopics_passed` contains all subtopic keys from the topic map.
 
 ## Progression Modes
 
@@ -130,7 +129,8 @@ When a Claude Code question is detected outside of `/tutor`:
 2. Determine the target topic:
    - No argument: find the current `in_progress` topic, or the first `unlocked` topic.
    - With argument: use the specified topic. Apply soft gate if locked.
-3. Find the next uncovered subtopic within the target topic.
+3. Find the next uncovered subtopic: compare the topic map's subtopic list against
+   `subtopics_passed` in progress.json. The first subtopic not in the passed list is next.
 4. Dispatch the content-retriever agent to fetch wiki content for that subtopic.
 5. Present the material progressively -- explain concepts, give examples, check
    understanding with questions before moving on.
@@ -205,5 +205,5 @@ Key fields:
 - `urls.wiki`: base URL for wiki content
 - `urls.anki_connect`: AnkiConnect API URL
 - `topics.<key>.status`: "locked", "unlocked", "in_progress", or "completed"
-- `topics.<key>.subtopics_passed`: count of passed subtopics
+- `topics.<key>.subtopics_passed`: list of passed subtopic keys (e.g., `["prompt-caching", "extended-thinking"]`)
 - `topics.<key>.subtopics_total`: total subtopics in the topic

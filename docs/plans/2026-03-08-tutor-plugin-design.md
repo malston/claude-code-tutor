@@ -307,32 +307,32 @@ if [[ "$HOOKS_ENABLED" != "True" ]]; then exit 0; fi
   "topics": {
     "internals": {
       "status": "unlocked",
-      "subtopics_passed": 0,
+      "subtopics_passed": [],
       "subtopics_total": 6
     },
     "guides": {
       "status": "locked",
-      "subtopics_passed": 0,
+      "subtopics_passed": [],
       "subtopics_total": 8
     },
     "extending": {
       "status": "locked",
-      "subtopics_passed": 0,
+      "subtopics_passed": [],
       "subtopics_total": 5
     },
     "product": {
       "status": "locked",
-      "subtopics_passed": 0,
+      "subtopics_passed": [],
       "subtopics_total": 4
     },
     "enterprise-rollout": {
       "status": "locked",
-      "subtopics_passed": 0,
+      "subtopics_passed": [],
       "subtopics_total": 6
     },
     "training-paths": {
       "status": "locked",
-      "subtopics_passed": 0,
+      "subtopics_passed": [],
       "subtopics_total": 3
     }
   }
