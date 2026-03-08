@@ -82,15 +82,15 @@ training-paths:
 
 Tell the user:
 
-> Running `/tutor:setup` for you...
+> Running `/claude-code-tutor:setup` for you...
 
-Then invoke the `/tutor:setup` command.
+Then invoke the `/claude-code-tutor:setup` command.
 
 ---
 
 ## Progress Overview
 
-1. Read `~/.claude-code-tutor/progress.json`. If missing, tell the user to run `/tutor setup`
+1. Read `~/.claude-code-tutor/progress.json`. If missing, tell the user to run `/claude-code-tutor:setup`
    first and stop.
 
 2. Build a table of all topics with these columns:
@@ -103,22 +103,22 @@ Then invoke the `/tutor:setup` command.
 3. Display the table.
 
 4. Suggest a next action:
-   - If there is an `in_progress` topic: "Continue with `/tutor` to pick up where you left
+   - If there is an `in_progress` topic: "Continue with `/claude-code-tutor:tutor` to pick up where you left
      off."
-   - If there are only `unlocked` topics (none in progress): "Start with `/tutor` to begin
+   - If there are only `unlocked` topics (none in progress): "Start with `/claude-code-tutor:tutor` to begin
      the next unlocked topic."
-   - If all topics are `completed`: "All topics complete! Try `/tutor quiz [topic]` to
+   - If all topics are `completed`: "All topics complete! Try `/claude-code-tutor:tutor quiz [topic]` to
      review."
 
 ---
 
 ## Guided Discovery (Resume)
 
-This handles `/tutor` with no arguments.
+This handles `/claude-code-tutor:tutor` with no arguments.
 
 ### Step 1: Load Progress
 
-Read `~/.claude-code-tutor/progress.json`. If missing, tell the user to run `/tutor setup`
+Read `~/.claude-code-tutor/progress.json`. If missing, tell the user to run `/claude-code-tutor:setup`
 first and stop.
 
 ### Step 2: Find Target Topic
@@ -233,7 +233,7 @@ Write the updated progress to `~/.claude-code-tutor/progress.json`.
 
 Tell the user what was covered and what comes next:
 
-- If the topic has more subtopics: "Next up: [next subtopic]. Run `/tutor` to continue."
+- If the topic has more subtopics: "Next up: [next subtopic]. Run `/claude-code-tutor:tutor` to continue."
 - If the topic just completed: "Topic [topic] complete! [Newly unlocked topics] are now
   available."
 - If all topics are done: "Congratulations! All topics complete."
@@ -242,11 +242,11 @@ Tell the user what was covered and what comes next:
 
 ## Guided Discovery (Topic)
 
-This handles `/tutor [topic]` where a specific topic is provided.
+This handles `/claude-code-tutor:tutor [topic]` where a specific topic is provided.
 
 ### Step 1: Load Progress
 
-Read `~/.claude-code-tutor/progress.json`. If missing, tell the user to run `/tutor setup`
+Read `~/.claude-code-tutor/progress.json`. If missing, tell the user to run `/claude-code-tutor:setup`
 first and stop.
 
 ### Step 2: Validate Topic
@@ -274,7 +274,7 @@ Ask the user via AskUserQuestion.
 **If unlocked or in_progress:** Proceed normally.
 
 **If completed:** Tell the user this topic is already completed. Suggest quiz mode for
-review (`/tutor quiz [topic]`) or ask if they want to revisit specific subtopics.
+review (`/claude-code-tutor:tutor quiz [topic]`) or ask if they want to revisit specific subtopics.
 
 ### Step 4: Find Next Subtopic
 
@@ -311,11 +311,11 @@ subtopic.
 
 ## Quiz Mode
 
-This handles `/tutor quiz` and `/tutor quiz [topic]`.
+This handles `/claude-code-tutor:tutor quiz` and `/claude-code-tutor:tutor quiz [topic]`.
 
 ### Step 1: Load Progress
 
-Read `~/.claude-code-tutor/progress.json`. If missing, tell the user to run `/tutor setup`
+Read `~/.claude-code-tutor/progress.json`. If missing, tell the user to run `/claude-code-tutor:setup`
 first and stop.
 
 ### Step 2: Determine Topic
@@ -324,7 +324,7 @@ first and stop.
   map.
 - If no topic specified: use the current `in_progress` topic from progress.json. If no
   topic is in progress, use the most recently completed topic. If no topic qualifies, tell
-  the user to start learning with `/tutor` first.
+  the user to start learning with `/claude-code-tutor:tutor` first.
 
 ### Step 3: Fetch Quiz Content
 

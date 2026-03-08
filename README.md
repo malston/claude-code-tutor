@@ -20,7 +20,7 @@ claude plugin install claude-code-tutor@claude-code-tutor-dev
 Run the setup command to configure your preferences:
 
 ```
-/tutor:setup
+/claude-code-tutor:setup
 ```
 
 This creates `~/.claude-code-tutor/progress.json` with your settings:
@@ -41,11 +41,11 @@ Just ask any Claude Code question and the tutor skill activates automatically:
 ### Structured learning
 
 ```
-/tutor              # Resume where you left off
-/tutor internals    # Start guided discovery for a specific topic
-/tutor quiz         # Quiz on your current topic
-/tutor quiz guides  # Quiz on a specific topic
-/tutor progress     # See your progress across all topics
+/claude-code-tutor:tutor              # Resume where you left off
+/claude-code-tutor:tutor internals    # Start guided discovery for a specific topic
+/claude-code-tutor:tutor quiz         # Quiz on your current topic
+/claude-code-tutor:tutor quiz guides  # Quiz on a specific topic
+/claude-code-tutor:tutor progress     # See your progress across all topics
 ```
 
 ### Progressive unlocking
@@ -65,15 +65,15 @@ Locked topics use soft gates -- you can jump ahead, but the tutor will offer to 
 
 ## Components
 
-| Type    | Name                   | Purpose                                                            |
-| ------- | ---------------------- | ------------------------------------------------------------------ |
-| Skill   | `tutor`                | Auto-invokes on Claude Code questions, routes to interaction modes |
-| Agent   | `content-retriever`    | Fetches wiki content and AnkiConnect flashcards                    |
-| Agent   | `assessment-evaluator` | Scores teach-back explanations and quiz answers                    |
-| Command | `/tutor`               | Structured learning sessions                                       |
-| Command | `/tutor:setup`         | First-run configuration                                            |
-| Hook    | `SessionStart`         | Session status display (opt-in)                                    |
-| Hook    | `PostToolUse`          | Progress auto-save (opt-in)                                        |
+| Type    | Name                       | Purpose                                                            |
+| ------- | -------------------------- | ------------------------------------------------------------------ |
+| Skill   | `tutor`                    | Auto-invokes on Claude Code questions, routes to interaction modes |
+| Agent   | `content-retriever`        | Fetches wiki content and AnkiConnect flashcards                    |
+| Agent   | `assessment-evaluator`     | Scores teach-back explanations and quiz answers                    |
+| Command | `/claude-code-tutor:tutor` | Structured learning sessions                                       |
+| Command | `/claude-code-tutor:setup` | First-run configuration                                            |
+| Hook    | `SessionStart`             | Session status display (opt-in)                                    |
+| Hook    | `PostToolUse`              | Progress auto-save (opt-in)                                        |
 
 ## License
 

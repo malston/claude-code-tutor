@@ -49,17 +49,18 @@ Store the choice as `content_source`: `"remote"`, `"local"`, or `"both"`.
 
 ## Step 4: Verify AnkiConnect
 
-Use WebFetch to POST to `http://localhost:8765` with body:
+Use Bash to check AnkiConnect with curl (WebFetch does not support localhost URLs):
 
-```json
-{ "action": "version", "version": 6 }
+```bash
+curl -s --max-time 3 -X POST http://localhost:8765 -d '{"action":"version","version":6}'
 ```
 
-- If the request succeeds and returns a response: AnkiConnect is available. Set
-  `urls.anki_connect` to `http://localhost:8765`. Tell the user AnkiConnect was detected.
-- If the request fails (connection refused, timeout, or any error): warn the user that
-  quiz mode requires Anki with the AnkiConnect plugin running. Set `urls.anki_connect` to
-  `http://localhost:8765` anyway (the user may start Anki later).
+- If the response contains `"result": 6` (or any numeric result) and `"error": null`:
+  AnkiConnect is available. Set `urls.anki_connect` to `http://localhost:8765`. Tell the
+  user AnkiConnect was detected along with the version number.
+- If curl fails (connection refused, timeout, non-JSON response, or any error): warn the
+  user that quiz mode requires Anki with the AnkiConnect plugin running. Set
+  `urls.anki_connect` to `http://localhost:8765` anyway (the user may start Anki later).
 
 ## Step 5: Ask About Hooks
 
@@ -136,4 +137,4 @@ URL.
 
 Tell the user:
 
-> Setup complete! Run `/tutor` to start learning, or just ask any Claude Code question.
+> Setup complete! Run `/claude-code-tutor:tutor` to start learning, or just ask any Claude Code question.
