@@ -41,11 +41,11 @@ Ask the user (via AskUserQuestion):
 
 Store the choice as `content_source`: `"remote"`, `"local"`, or `"both"`.
 
-- If `"remote"` or `"both"`: set `wiki_url` to `https://malston.github.io/claude-code-wiki/`.
+- If `"remote"` or `"both"`: set `urls.wiki` to `https://malston.github.io/claude-code-wiki/`.
 - If `"local"`: ask the user for the Hugo dev server port (default 1313) via
-  AskUserQuestion. Set `wiki_url` to `http://localhost:{port}/`.
-- If `"both"`: also ask for the local port. Set `wiki_url` to the remote URL (the skill
-  handles fallback logic) and store `local_wiki_url` as `http://localhost:{port}/`.
+  AskUserQuestion. Set `urls.wiki` to `http://localhost:{port}/`.
+- If `"both"`: also ask for the local port. Set `urls.wiki` to the remote URL (the skill
+  handles fallback logic) and store `urls.local_wiki` as `http://localhost:{port}/`.
 
 ## Step 4: Verify AnkiConnect
 
@@ -56,9 +56,9 @@ Use WebFetch to POST to `http://localhost:8765` with body:
 ```
 
 - If the request succeeds and returns a response: AnkiConnect is available. Set
-  `anki_url` to `http://localhost:8765`. Tell the user AnkiConnect was detected.
+  `urls.anki_connect` to `http://localhost:8765`. Tell the user AnkiConnect was detected.
 - If the request fails (connection refused, timeout, or any error): warn the user that
-  quiz mode requires Anki with the AnkiConnect plugin running. Set `anki_url` to
+  quiz mode requires Anki with the AnkiConnect plugin running. Set `urls.anki_connect` to
   `http://localhost:8765` anyway (the user may start Anki later).
 
 ## Step 5: Ask About Hooks

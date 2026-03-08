@@ -126,6 +126,51 @@ JSON
     "$output"
 }
 
+# ---------- Test 6: Empty topics dict → silent exit ----------
+test_empty_topics() {
+  TEMP_HOME="$(make_temp_home)"
+  trap cleanup RETURN
+  cat > "$TEMP_HOME/.claude-code-tutor/progress.json" <<'JSON'
+{
+  "hooks_enabled": true,
+  "topics": {}
+}
+JSON
+  local output
+  output="$(HOME="$TEMP_HOME" bash "$HOOK" 2>&1)" || true
+  run_test "Empty topics dict → silent exit" "" "$output"
+}
+
+# ---------- Test 7: Malformed JSON → silent exit ----------
+test_corrupt_json() {
+  TEMP_HOME="$(make_temp_home)"
+  trap cleanup RETURN
+  echo "this is not valid json {{{" > "$TEMP_HOME/.claude-code-tutor/progress.json"
+  local output
+  output="$(HOME="$TEMP_HOME" bash "$HOOK" 2>&1)" || true
+  run_test "Corrupt JSON → silent exit" "" "$output"
+}
+
+# ---------- Test 8: In-progress beats unlocked (priority) ----------
+test_in_progress_beats_unlocked() {
+  TEMP_HOME="$(make_temp_home)"
+  trap cleanup RETURN
+  cat > "$TEMP_HOME/.claude-code-tutor/progress.json" <<'JSON'
+{
+  "hooks_enabled": true,
+  "topics": {
+    "internals": {"status": "in_progress", "subtopics_passed": ["system-prompt-anatomy"], "subtopics_total": 6},
+    "guides": {"status": "unlocked", "subtopics_passed": [], "subtopics_total": 8}
+  }
+}
+JSON
+  local output
+  output="$(HOME="$TEMP_HOME" bash "$HOOK" 2>&1)" || true
+  run_test "In-progress beats unlocked → shows in-progress" \
+    "Tutor: Internals -- 1/6 subtopics complete. /tutor to continue." \
+    "$output"
+}
+
 # ---------- Run all tests ----------
 echo "=== session-status hook tests ==="
 test_no_progress_file
@@ -133,6 +178,9 @@ test_hooks_disabled
 test_in_progress
 test_all_completed
 test_unlocked_ready
+test_empty_topics
+test_corrupt_json
+test_in_progress_beats_unlocked
 
 echo ""
 echo "Results: $PASS passed, $FAIL failed"

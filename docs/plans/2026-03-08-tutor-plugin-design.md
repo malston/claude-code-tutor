@@ -101,9 +101,8 @@ training-paths:
 
 The content-retriever queries AnkiConnect at `localhost:8765` using:
 
-- `findNotes` -- search by deck name and `section::topic` tags
+- `findNotes` -- search by deck name and `section::subtopic` tags
 - `notesInfo` -- retrieve card front/back content
-- `getDecks` -- list available decks for validation during setup
 
 Cards in the study guide use tab-separated format with tags following the
 `section::topic` convention, which maps directly to the topic progression structure.
@@ -247,7 +246,7 @@ response naturally.
 - Quick-exits if file doesn't exist or `hooks_enabled` is false
 - Outputs a status line:
   ```
-  Tutor: Level 3 (Extending) -- 2/5 subtopics complete. /tutor to continue.
+  Tutor: Extending -- 2/5 subtopics complete. /tutor to continue.
   ```
 
 ### PostToolUse Hook (opt-in)
@@ -261,14 +260,13 @@ response naturally.
 ### Hook Gating Pattern
 
 ```bash
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 PROGRESS="$HOME/.claude-code-tutor/progress.json"
 if [[ ! -f "$PROGRESS" ]]; then exit 0; fi
 
-HOOKS_ENABLED=$(python3 -c "import json; print(json.load(open('$PROGRESS'))['hooks_enabled'])" 2>/dev/null)
-if [[ "$HOOKS_ENABLED" != "True" ]]; then exit 0; fi
-
-# ... hook logic
+# Hook logic runs inside a Python heredoc that checks hooks_enabled
+# See hooks/session-status.sh and hooks/progress-saver.sh for full examples
 ```
 
 ## `/tutor:setup` Command

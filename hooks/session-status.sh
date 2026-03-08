@@ -4,12 +4,14 @@ set -euo pipefail
 PROGRESS="$HOME/.claude-code-tutor/progress.json"
 if [[ ! -f "$PROGRESS" ]]; then exit 0; fi
 
-# Parse progress data and produce status output
 python3 - "$PROGRESS" <<'PYEOF'
 import json, sys
 
-with open(sys.argv[1]) as f:
-    data = json.load(f)
+try:
+    with open(sys.argv[1]) as f:
+        data = json.load(f)
+except (json.JSONDecodeError, IOError):
+    sys.exit(0)
 
 if not data.get('hooks_enabled', False):
     sys.exit(0)
@@ -24,6 +26,8 @@ DISPLAY_NAMES = {
 }
 
 topics = data.get('topics', {})
+if not topics:
+    sys.exit(0)
 
 # Check for in-progress topic
 for key, info in topics.items():
@@ -35,7 +39,7 @@ for key, info in topics.items():
         sys.exit(0)
 
 # Check if all topics are completed
-if topics and all(info.get('status') == 'completed' for info in topics.values()):
+if all(info.get('status') == 'completed' for info in topics.values()):
     count = len(topics)
     print(f'Tutor: All {count} topics complete! /tutor quiz to review.')
     sys.exit(0)

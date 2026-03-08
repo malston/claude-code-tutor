@@ -273,6 +273,102 @@ EOF
 }
 
 # --------------------------------------------------------------------------
+# Test 8: Empty stdin -> silent exit, file unchanged
+# --------------------------------------------------------------------------
+test_empty_stdin() {
+    setup_temp_home
+    write_progress <<'EOF'
+{
+  "hooks_enabled": true,
+  "topics": {
+    "internals": {
+      "status": "in_progress",
+      "subtopics_passed": ["system-prompt-anatomy"],
+      "subtopics_total": 6
+    }
+  }
+}
+EOF
+    local before after result
+    before=$(read_progress)
+    result=$(echo -n "" | bash "$HOOK" 2>&1) || true
+    after=$(read_progress)
+    assert_eq "Empty stdin: file unchanged" "$before" "$after"
+    assert_eq "Empty stdin: no output" "" "$result"
+}
+
+# --------------------------------------------------------------------------
+# Test 9: Non-JSON stdin -> silent exit, file unchanged
+# --------------------------------------------------------------------------
+test_non_json_stdin() {
+    setup_temp_home
+    write_progress <<'EOF'
+{
+  "hooks_enabled": true,
+  "topics": {
+    "internals": {
+      "status": "in_progress",
+      "subtopics_passed": ["system-prompt-anatomy"],
+      "subtopics_total": 6
+    }
+  }
+}
+EOF
+    local before after result
+    before=$(read_progress)
+    result=$(echo "this is not json at all" | bash "$HOOK" 2>&1) || true
+    after=$(read_progress)
+    assert_eq "Non-JSON stdin: file unchanged" "$before" "$after"
+    assert_eq "Non-JSON stdin: no output" "" "$result"
+}
+
+# --------------------------------------------------------------------------
+# Test 10: Unknown topic -> silent exit, file unchanged
+# --------------------------------------------------------------------------
+test_unknown_topic() {
+    setup_temp_home
+    write_progress <<'EOF'
+{
+  "hooks_enabled": true,
+  "topics": {
+    "internals": {
+      "status": "in_progress",
+      "subtopics_passed": ["system-prompt-anatomy"],
+      "subtopics_total": 6
+    }
+  }
+}
+EOF
+    local before after
+    before=$(read_progress)
+    echo '{"topic":"nonexistent","subtopic":"foo","pass":true}' | bash "$HOOK"
+    after=$(read_progress)
+    assert_eq "Unknown topic: file unchanged" "$before" "$after"
+}
+
+# --------------------------------------------------------------------------
+# Test 11: Successful save produces no stdout
+# --------------------------------------------------------------------------
+test_no_stdout_on_save() {
+    setup_temp_home
+    write_progress <<'EOF'
+{
+  "hooks_enabled": true,
+  "topics": {
+    "internals": {
+      "status": "in_progress",
+      "subtopics_passed": [],
+      "subtopics_total": 6
+    }
+  }
+}
+EOF
+    local result
+    result=$(echo '{"topic":"internals","subtopic":"prompt-caching","pass":true}' | bash "$HOOK" 2>&1)
+    assert_eq "Successful save: no stdout" "" "$result"
+}
+
+# --------------------------------------------------------------------------
 # Run all tests
 # --------------------------------------------------------------------------
 echo "Running progress-saver hook tests..."
@@ -285,6 +381,10 @@ test_pass_completes_topic_and_unlocks
 test_fail_no_change
 test_duplicate_idempotent
 test_training_paths_requires_both
+test_empty_stdin
+test_non_json_stdin
+test_unknown_topic
+test_no_stdout_on_save
 
 echo "======================================"
 echo "Results: $PASS passed, $FAIL failed (of $TESTS tests)"
