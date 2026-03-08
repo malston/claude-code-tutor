@@ -1,6 +1,6 @@
 ---
 name: content-retriever
-description: Fetches Claude Code wiki content via WebFetch and queries AnkiConnect for flashcards. Returns focused excerpts for tutoring.
+description: Fetches Claude Code wiki content and AnkiConnect flashcards. Returns focused excerpts for tutoring.
 tools: WebFetch, Read, Bash
 ---
 
@@ -82,8 +82,8 @@ If WebFetch fails (network error, 404, timeout, or any other failure):
 
 When `source` is `anki`:
 
-AnkiConnect runs on localhost, and WebFetch does not support localhost URLs. Use Bash with
-curl for all AnkiConnect requests.
+AnkiConnect runs on localhost over plain HTTP, and WebFetch upgrades HTTP URLs to HTTPS,
+making it incompatible with AnkiConnect. Use Bash with curl for all AnkiConnect requests.
 
 1. Determine the deck name from the topic. The study guide uses 6 decks matching the topic
    keys: `internals`, `guides`, `extending`, `enterprise-rollout`, `product`,

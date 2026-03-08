@@ -1,6 +1,6 @@
 ---
 description: First-run setup for the Claude Code tutor. Configures progression mode, content sources, and hooks.
-allowed-tools: Bash, Read, Write, WebFetch, AskUserQuestion
+allowed-tools: Bash, Read, Write, AskUserQuestion
 ---
 
 # Setup
@@ -49,7 +49,7 @@ Store the choice as `content_source`: `"remote"`, `"local"`, or `"both"`.
 
 ## Step 4: Verify AnkiConnect
 
-Use Bash to check AnkiConnect with curl (WebFetch does not support localhost URLs):
+Use Bash to check AnkiConnect with curl (WebFetch upgrades HTTP to HTTPS, which breaks plain HTTP localhost endpoints):
 
 ```bash
 curl -s --max-time 3 -X POST http://localhost:8765 -d '{"action":"version","version":6}'
