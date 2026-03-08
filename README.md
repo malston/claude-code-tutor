@@ -1,11 +1,11 @@
 # claude-code-tutor
 
-A Claude Code plugin that tutors workshop attendees on how to use and improve their Claude Code workflow. Content is sourced from the [Claude Code Wiki](https://malston.github.io/claude-code-wiki/) and Anki flashcard decks via [AnkiConnect](https://foosoft.net/projects/anki-connect/).
+A Claude Code plugin that tutors workshop attendees on how to use and improve their Claude Code workflow. Content is sourced from the [Claude Code Wiki](https://malston.github.io/claude-code-wiki/) and Anki flashcard decks via [AnkiConnect](https://ankiweb.net/shared/info/2055492159).
 
 ## Prerequisites
 
 - Claude Code CLI
-- [Anki](https://apps.ankiweb.net/) with [AnkiConnect](https://foosoft.net/projects/anki-connect/) plugin (for quiz mode)
+- [Anki](https://apps.ankiweb.net/) with [AnkiConnect](https://ankiweb.net/shared/info/2055492159) add-on (for quiz mode)
 - Study guide flashcard decks imported into Anki
 
 ## Installation
