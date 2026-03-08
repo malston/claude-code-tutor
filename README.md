@@ -10,10 +10,9 @@ A Claude Code plugin that tutors workshop attendees on how to use and improve th
 
 ## Installation
 
-Add this plugin to your Claude Code configuration:
-
 ```bash
-claude plugin add /path/to/claude-code-tutor
+claude plugin marketplace add malston/claude-code-tutor
+claude plugin install claude-code-tutor@claude-code-tutor-dev
 ```
 
 ## Setup
