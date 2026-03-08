@@ -35,19 +35,19 @@ for key, info in topics.items():
         passed = len(info.get('subtopics_passed', []))
         total = info.get('subtopics_total', 0)
         name = DISPLAY_NAMES.get(key, key)
-        print(f'Tutor: {name} -- {passed}/{total} subtopics complete. /tutor to continue.')
+        print(f'Tutor: {name} -- {passed}/{total} subtopics complete. /claude-code-tutor:tutor to continue.')
         sys.exit(0)
 
 # Check if all topics are completed
 if all(info.get('status') == 'completed' for info in topics.values()):
     count = len(topics)
-    print(f'Tutor: All {count} topics complete! /tutor quiz to review.')
+    print(f'Tutor: All {count} topics complete! /claude-code-tutor:tutor quiz to review.')
     sys.exit(0)
 
 # Check for unlocked topic ready to start
 for key, info in topics.items():
     if info.get('status') == 'unlocked':
         name = DISPLAY_NAMES.get(key, key)
-        print(f'Tutor: Ready for {name}. /tutor to start.')
+        print(f'Tutor: Ready for {name}. /claude-code-tutor:tutor to start.')
         sys.exit(0)
 PYEOF

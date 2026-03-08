@@ -90,14 +90,14 @@ making it incompatible with AnkiConnect. Use Bash with curl for all AnkiConnect 
    `training-paths`.
 2. Find matching notes by posting to the AnkiConnect API via Bash:
    ```bash
-   curl -s --max-time 5 -X POST {anki_url} -d '{"action":"findNotes","version":6,"params":{"query":"deck:DeckName tag:section::subtopic"}}'
+   curl -s --max-time 5 -X POST "{anki_url}" -d '{"action":"findNotes","version":6,"params":{"query":"deck:DeckName tag:section::subtopic"}}'
    ```
    Replace `{anki_url}` with the AnkiConnect URL from input, `DeckName` with the topic's
    deck name, and `section::subtopic` with the tag matching the subtopic (e.g.,
    `internals::context-window-management`).
 3. Retrieve note details by posting via Bash:
    ```bash
-   curl -s --max-time 5 -X POST {anki_url} -d '{"action":"notesInfo","version":6,"params":{"notes":[noteId1,noteId2]}}'
+   curl -s --max-time 5 -X POST "{anki_url}" -d '{"action":"notesInfo","version":6,"params":{"notes":[noteId1,noteId2]}}'
    ```
 4. Extract the Front and Back fields from each note. Cards use tab-separated format.
 5. Limit the results to `count` cards (default 10). If more notes are available than
