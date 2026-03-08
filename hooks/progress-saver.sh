@@ -4,26 +4,32 @@ set -euo pipefail
 PROGRESS="$HOME/.claude-code-tutor/progress.json"
 if [[ ! -f "$PROGRESS" ]]; then exit 0; fi
 
-HOOKS_ENABLED=$(python3 -c "import json; print(json.load(open('$PROGRESS'))['hooks_enabled'])" 2>/dev/null)
-if [[ "$HOOKS_ENABLED" != "True" ]]; then exit 0; fi
+HOOKS_ENABLED=$(python3 -c "import json; print(str(json.load(open('$PROGRESS')).get('hooks_enabled', False)).lower())" 2>/dev/null)
+if [[ "$HOOKS_ENABLED" != "true" ]]; then exit 0; fi
 
+# Capture stdin before heredoc overrides it
 INPUT=$(cat)
 
 python3 -c "
-import json, sys
+import json, sys, os
 
-input_data = json.loads('''$INPUT''')
-topic = input_data['topic']
-subtopic = input_data['subtopic']
-passed = input_data['pass']
+progress_path = sys.argv[1]
+input_text = sys.argv[2]
 
-if not passed:
+input_data = json.loads(input_text)
+topic = input_data.get('topic', '')
+subtopic = input_data.get('subtopic', '')
+passed = input_data.get('pass', False)
+
+if not topic or not subtopic or not passed:
     sys.exit(0)
 
-with open('$PROGRESS', 'r') as f:
+with open(progress_path, 'r') as f:
     data = json.load(f)
 
 topics = data['topics']
+if topic not in topics:
+    sys.exit(0)
 
 # Append subtopic if not already present
 if subtopic not in topics[topic]['subtopics_passed']:
@@ -51,6 +57,6 @@ for dep_topic, required in prereqs.items():
     if all(topics.get(req, {}).get('status') == 'completed' for req in required):
         topics[dep_topic]['status'] = 'unlocked'
 
-with open('$PROGRESS', 'w') as f:
+with open(progress_path, 'w') as f:
     json.dump(data, f, indent=2)
-"
+" "$PROGRESS" "$INPUT"

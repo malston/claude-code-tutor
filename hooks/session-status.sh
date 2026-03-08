@@ -5,10 +5,10 @@ PROGRESS="$HOME/.claude-code-tutor/progress.json"
 if [[ ! -f "$PROGRESS" ]]; then exit 0; fi
 
 # Parse progress data and produce status output
-python3 -c "
+python3 - "$PROGRESS" <<'PYEOF'
 import json, sys
 
-with open('$PROGRESS') as f:
+with open(sys.argv[1]) as f:
     data = json.load(f)
 
 if not data.get('hooks_enabled', False):
@@ -46,4 +46,4 @@ for key, info in topics.items():
         name = DISPLAY_NAMES.get(key, key)
         print(f'Tutor: Ready for {name}. /tutor to start.')
         sys.exit(0)
-"
+PYEOF
